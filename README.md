@@ -9,5 +9,6 @@ Overview
 
 The basic idea is to store the data in trie data structure (i.e. in dictionary like format) and 
 get the all possible suffix to be stored in queue 
-so that we loop over it and check wheather it is a compound word or not 
-and store the largest and second largest word for output.    
+so that we loop over it and check wheather it is a compound word or not
+if suffix is matched with the words present in trie then it is a compound word 
+and alongwith this store the largest and the second largest word for output.    
