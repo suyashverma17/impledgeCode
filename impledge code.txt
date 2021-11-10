@@ -1,0 +1,123 @@
+import java.util.*;
+import java.io.*;
+public class MyClass
+{
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		Queue<pair> q = new LinkedList<>();
+		List<Integer> suffix ;
+		String inp = br.readLine();
+		trie t = new trie();
+		while(!inp.equals("")){
+		    suffix = t.getSuffixIdx(inp);
+		    
+		    for(int i: suffix){
+		        q.add(new pair(inp, inp.substring(i)));
+		    }
+		    t.insert(inp);
+		    inp = br.readLine();
+		}
+		pair p ;
+		int maxlen=0;
+		String longest="" , seclong = "";
+		while(!q.isEmpty()){
+		    p = q.remove();
+		    String word = p.second();
+		    suffix = t.getSuffixIdx(word);
+		    
+		    if(suffix.isEmpty())
+		        continue;
+		        
+		    for(int i: suffix){
+		        if(i == word.length()){
+		            if (p.first().length() > maxlen) {
+						maxlen = p.first().length();
+						seclong = longest;
+						longest = p.first();
+					}
+		        }
+		        else
+					q.add(new pair(p.first(), word.substring(i)));
+		    }      
+		}
+		System.out.println("Longest Compound Word: " + longest);
+		System.out.println("Second Longest Compound Word: " + seclong);
+	}
+}
+
+class trie{
+    trieNode root,cur;
+    
+    public trie(){
+        root = new trieNode(' ');
+		cur = root;
+    }
+    
+    public void insert(String st){
+        cur = root;
+        for(int i=0; i<st.length(); i++){
+            char ch = st.charAt(i);
+            
+            if(!cur.containsChild(ch))
+                cur.addChild(ch);
+            cur = cur.getChild(ch);    
+        }
+        cur.isword = true;
+    }
+    
+    public List<Integer> getSuffixIdx(String word){
+        List<Integer> lst = new LinkedList<Integer>();
+		char letter;
+		cur = root;
+		
+		for(int i=0; i<word.length(); i++){
+		    char ch = word.charAt(i);
+		    
+		    if(!cur.containsChild(ch))
+		        break;
+		    cur = cur.getChild(ch);
+		    if(cur.isword)
+		        lst.add(i+1);
+		}
+		return lst;
+    }
+}
+
+class trieNode{
+        HashMap<Character, trieNode> children;
+        boolean isword ;
+        
+        public trieNode(char ch){
+            children = new HashMap<>();
+            isword = false;
+        }
+        
+        public void addChild(char child) {
+			children.put(child, new trieNode(child));
+		}
+		
+		public trieNode getChild(char child) {
+			if (!children.keySet().contains(child)) {
+				return null;
+			}
+			return children.get(child);
+		}
+		
+		public boolean containsChild(char child) {
+			return children.keySet().contains(child);
+		}
+    }
+
+class pair{
+    String first, second;
+    public pair(String first, String second){
+        this.first = first;
+        this.second = second;
+    }
+    public String first() {
+		return first;
+	}
+	public String second() {
+		return second;
+	}
+}
