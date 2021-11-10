@@ -6,6 +6,7 @@ Steps to execute the code
 3. Press Enter ↵ to get the output. 
 
 Overview
+
 The basic idea is to store the data in trie data structure (i.e. in dictionary like format) and 
 get the all possible suffix to be stored in queue 
 so that we loop over it and check wheather it is a compound word or not 
